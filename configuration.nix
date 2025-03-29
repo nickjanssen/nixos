@@ -2,17 +2,14 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, home-manager, impermanence, ... }:
 
-let
-  impermanence = builtins.fetchTarball "https://github.com/nix-community/impermanence/archive/master.tar.gz";
-  home-manager = builtins.fetchTarball https://github.com/nix-community/home-manager/archive/release-24.11.tar.gz;
-in
 {
   imports =
     [
       "${impermanence}/nixos.nix"
-      (import "${home-manager}/nixos")
+      #(import "${home-manager}/nixos")
+      home-manager.nixosModules.home-manager
       ./hardware-configuration.nix
     ];
 
