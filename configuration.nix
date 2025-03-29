@@ -162,7 +162,7 @@
     allowedUDPPorts = [ ];
   };
 
-  system.copySystemConfiguration = true;
+  #system.copySystemConfiguration = true;
 
   # Read the doc before updating
   system.stateVersion = "22.11";
