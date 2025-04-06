@@ -211,6 +211,8 @@ boot.extraModulePackages = [ ];  # Leave empty unless you're building out-of-tre
   programs.hyprland.enable = true;
   programs.waybar.enable = true;
   programs.adb.enable = true;
+  programs.hyprlock.enable = true;
+  programs.hyprsunset.enable = true;
 
   #programs.slock.enable = true;
 
