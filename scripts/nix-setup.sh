@@ -57,8 +57,9 @@ nixos-generate-config --root /mnt
 
 # now, edit nixos configuration and nixos-install
 cp ../configuration.nix /mnt/etc/nixos/configuration.nix
+cp ../hardware-configuration.nix /mnt/etc/nixos/hardware-configuration.nix
 mkdir -p /mnt/persist/etc/nixos/
-cp ../configuration.nix /mnt/persist/etc/nixos/configuration.nix
+cp /mnt/etc/nixos/configuration.nix /mnt/persist/etc/nixos/configuration.nix
 cp /mnt/etc/nixos/hardware-configuration.nix /mnt/persist/etc/nixos/hardware-configuration.nix
 
 
