@@ -19,6 +19,7 @@
       experimental-features = [ "nix-command" "flakes" ];
     };
   };
+  nixpkgs.config.allowUnfree = true;
 
   # filesystems
   fileSystems."/".options = [ "compress=zstd" "noatime" ];
@@ -34,6 +35,18 @@
   #  "systemd.log_level=debug"
   #  "systemd.log_target=console"
   #];
+  #boot.kernelParams = [ "psmouse.synaptics_intertouch=1" ];
+#boot.blacklistedKernelModules = [ "psmouse" ];
+
+#boot.kernelModules = [ "i2c_hid" "i2c_hid_acpi" ];
+boot.kernelParams = [
+  "i2c_hid_acpi.disable_watchdog=1"
+];
+
+
+boot.extraModulePackages = [ ];  # Leave empty unless you're building out-of-tree stuff
+
+
 
   # reset / at each boot
   boot.initrd = {
@@ -78,6 +91,7 @@
     ];
     files = [
       "/etc/machine-id"
+      "/etc/modprobe.d/blacklist.conf"
       #"/etc/ssh/ssh_host_ed25519_key"
       #"/etc/ssh/ssh_host_ed25519_key.pub"
       #"/etc/ssh/ssh_host_rsa_key"
@@ -103,13 +117,49 @@
     git
     vim
     firefox
+    _1password-gui
+    google-chrome
+    docker
+    remmina
+    freerdp3
+    kdePackages.kio-fuse #to mount remote filesystems via FUSE
+    kdePackages.kio-extras #extra protocols support (sftp, fish and more)
+    kdePackages.dolphin-plugins
+    android-file-transfer
+    fusuma
+    #i3status
+    dmenu
+    arandr
+    bluetuith
+    #greenclip
+    #rofi
+    pavucontrol
+    parcellite
+    parted
+    wezterm
+    #i3lock
+    #i3lock-color
+    #xautolock
+    pkgs.kitty
+    wl-clipboard
+    wofi
+    unzip
+    gnome-keyring
+    gnupg
+    pinentry-bemenu
+    libinput
+    evtest
+  ];
+
+  fonts.packages = with pkgs; [
+    font-awesome
   ];
 
   users.mutableUsers = false;
 
   users.users.edm = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    extraGroups = [ "wheel" "libvirtd" "kvm" "input" "adbusers" ];
 
     openssh.authorizedKeys.keys = [ "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDkde01zd1rp7TggQQ8LKj6yhyZe7Ld97tH0uq4/eQnPXgFdu6dXwvGN+JJk+4rTN8FBSIMrnZN0q/Nk6XbtvBMZpv1HDWgsD2DjMPOIRXHAwnJ7r/jjMWlWEqdvv/zd/9Jv7phi0xtE+HFI9ygYvgshdgS44E9SEqA8X6266zm4fB5AyH87oZxBl3ySbF8fBES0K+wiUKLBn6EAGqOD/SjMMV27hX6/x2Kz4uGYHzbTBWJXBcwgPbDBTEy6lQEmfo4s2LkmSBSjNrQWju5R2rcdt8QPOBQwvoYESq/AX48ZzFAV3I6d0aVU5LfslOefhtnzCeVNbMJccGMQn3nZI9z info@nickjanssen.com" ];
 
@@ -143,12 +193,46 @@
   };
 
   services.xserver.enable = true;
-  services.xserver.displayManager.sddm.enable = true;
-  services.xserver.desktopManager.plasma5.enable = true;
+  #services.xserver.windowManager.i3.enable = true;
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.plasma5.enable = false;
+
+  security.pam.services.gdm.enableGnomeKeyring = true;
 
   services.libinput.enable = true;
   services.libinput.touchpad.naturalScrolling = true;
 
+  services.flatpak.enable = true; 
+  #xdg.portal.enable = true;
+  #xdg.portal.extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
+
+  services.gnome.gnome-keyring.enable = true;
+
+  programs.hyprland.enable = true;
+  programs.waybar.enable = true;
+  programs.adb.enable = true;
+
+  #programs.slock.enable = true;
+
+  virtualisation.libvirtd.enable = true;
+  programs.virt-manager.enable = true;
+  virtualisation.docker.enable = true;
+
+  #services.blueman.enable = true; # GUI manager (optional but recommended)
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+
+  # Optional: For better compatibility with some adapters/devices
+  hardware.bluetooth.settings = {
+    General = {
+      Enable = "Source,Sink,Media,Socket";
+    };
+  };
+
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
   #services.xserver.libinput = {
   #  enable = true;
   #  naturalScrolling = true; 
@@ -156,11 +240,11 @@
   #};
 
   # Open ports in the firewall.
-  networking.firewall = {
-    enable = true;
-    allowedTCPPorts = [ 22 ];
-    allowedUDPPorts = [ ];
-  };
+  #networking.firewall = {
+  #  enable = true;
+  #  allowedTCPPorts = [ 22 ];
+  #  allowedUDPPorts = [ ];
+  #};
 
   #system.copySystemConfiguration = true;
 
