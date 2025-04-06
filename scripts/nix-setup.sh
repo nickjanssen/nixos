@@ -62,6 +62,6 @@ cp ../configuration.nix /mnt/persist/etc/nixos/configuration.nix
 cp /mnt/etc/nixos/hardware-configuration.nix /mnt/persist/etc/nixos/hardware-configuration.nix
 
 
-nixos-install --no-root-passwd --root /mnt
+nixos-install --no-root-passwd --root /mnt --flake .#nixos
 
-reboot
+#reboot
