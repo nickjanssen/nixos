@@ -62,6 +62,10 @@ mkdir -p /mnt/persist/etc/nixos/
 cp /mnt/etc/nixos/configuration.nix /mnt/persist/etc/nixos/configuration.nix
 cp /mnt/etc/nixos/hardware-configuration.nix /mnt/persist/etc/nixos/hardware-configuration.nix
 
+git config user.email "installer@local"
+git config user.name "installer"
+git add hardware-configuration.nix
+git commit -m "tmp"
 
 nixos-install --no-root-passwd --root /mnt --flake .#nixos
 
