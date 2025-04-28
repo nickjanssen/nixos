@@ -39,9 +39,9 @@
 #boot.blacklistedKernelModules = [ "psmouse" ];
 
 #boot.kernelModules = [ "i2c_hid" "i2c_hid_acpi" ];
-boot.kernelParams = [
-  "i2c_hid_acpi.disable_watchdog=1"
-];
+#boot.kernelParams = [
+#  "i2c_hid_acpi.disable_watchdog=1"
+#];
 
 
 boot.extraModulePackages = [ ];  # Leave empty unless you're building out-of-tree stuff
@@ -91,7 +91,7 @@ boot.extraModulePackages = [ ];  # Leave empty unless you're building out-of-tre
     ];
     files = [
       "/etc/machine-id"
-      "/etc/modprobe.d/blacklist.conf"
+      #"/etc/modprobe.d/blacklist.conf"
       #"/etc/ssh/ssh_host_ed25519_key"
       #"/etc/ssh/ssh_host_ed25519_key.pub"
       #"/etc/ssh/ssh_host_rsa_key"
@@ -108,7 +108,7 @@ boot.extraModulePackages = [ ];  # Leave empty unless you're building out-of-tre
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "nixos";
+  networking.hostName = "omen";
   networking.networkmanager.enable = true;
 
   time.timeZone = "Asia/Tokyo";
@@ -117,42 +117,8 @@ boot.extraModulePackages = [ ];  # Leave empty unless you're building out-of-tre
     git
     vim
     firefox
-    _1password-gui
-    google-chrome
     docker
     remmina
-    freerdp3
-    kdePackages.kio-fuse #to mount remote filesystems via FUSE
-    kdePackages.kio-extras #extra protocols support (sftp, fish and more)
-    kdePackages.dolphin-plugins
-    android-file-transfer
-    fusuma
-    #i3status
-    dmenu
-    arandr
-    bluetuith
-    #greenclip
-    #rofi
-    pavucontrol
-    parcellite
-    parted
-    wezterm
-    #i3lock
-    #i3lock-color
-    #xautolock
-    pkgs.kitty
-    wl-clipboard
-    wofi
-    unzip
-    gnome-keyring
-    gnupg
-    pinentry-bemenu
-    libinput
-    evtest
-  ];
-
-  fonts.packages = with pkgs; [
-    font-awesome
   ];
 
   users.mutableUsers = false;
@@ -192,54 +158,31 @@ boot.extraModulePackages = [ ];  # Leave empty unless you're building out-of-tre
     '';
   };
 
+
   services.xserver.enable = true;
-  #services.xserver.windowManager.i3.enable = true;
   services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
+
+  # Disable any other desktop environments or window managers
   services.xserver.desktopManager.plasma5.enable = false;
 
-  security.pam.services.gdm.enableGnomeKeyring = true;
-
-  services.libinput.enable = true;
-  services.libinput.touchpad.naturalScrolling = true;
-
-  services.flatpak.enable = true; 
-  #xdg.portal.enable = true;
-  #xdg.portal.extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
-
-  services.gnome.gnome-keyring.enable = true;
-
-  programs.hyprland.enable = true;
-  programs.waybar.enable = true;
-  programs.adb.enable = true;
-  programs.hyprlock.enable = true;
-  programs.hyprsunset.enable = true;
-
-  #programs.slock.enable = true;
-
-  virtualisation.libvirtd.enable = true;
-  programs.virt-manager.enable = true;
   virtualisation.docker.enable = true;
 
-  #services.blueman.enable = true; # GUI manager (optional but recommended)
+  services.blueman.enable = true; # GUI manager (optional but recommended)
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
 
   # Optional: For better compatibility with some adapters/devices
-  hardware.bluetooth.settings = {
-    General = {
-      Enable = "Source,Sink,Media,Socket";
-    };
-  };
+  #hardware.bluetooth.settings = {
+  #  General = {
+  #    Enable = "Source,Sink,Media,Socket";
+  #  };
+  #};
 
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
   };
-  #services.xserver.libinput = {
-  #  enable = true;
-  #  naturalScrolling = true; 
-  #  # additionalOptions = ''MatchIsTouchpad "on"'';
-  #};
 
   # Open ports in the firewall.
   #networking.firewall = {
