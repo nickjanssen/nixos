@@ -11,7 +11,7 @@ parted "$DISK" -- set 1 boot on
 mkfs.vfat "$DISK"p1
 
 # leave room for windows
-parted "$DISK" -- mkpart primary 512MiB -200GiB
+parted "$DISK" -- mkpart primary 512MiB 100%
 parted "$DISK" -- name 2 cryptroot
 
 cryptsetup luksFormat "$DISK"p2
